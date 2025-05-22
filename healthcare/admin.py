@@ -38,12 +38,13 @@ class CustomUserChangeForm(UserChangeForm):
 class CustomUser(admin.ModelAdmin):
     model = User
     form = CustomUserChangeForm
-    list_display = ['username','first_name', 'last_name', 'date_of_birth', 'contact_number', 'role']
+    # list_display = ['username','first_name', 'last_name', 'date_of_birth', 'contact_number', 'role']
+    list_display = ['username', 'first_name', 'last_name', 'date_of_birth', 'contact_number']
 
 
 class CustomPeriod(admin.ModelAdmin):
     model = DiagnosisPeriod
-    list_display = ['id', 'fromDateTime', 'toDateTime']
+    list_display = ['id', 'user', 'fromDateTime', 'toDateTime']
 
 
 class CustomMedicalRecord(admin.ModelAdmin):
@@ -53,17 +54,17 @@ class CustomMedicalRecord(admin.ModelAdmin):
 
 class CustomMedicalRecordDetail(admin.ModelAdmin):
     model = MedicalRecordDetail
-    list_display = ['med_record', 'symptoms', 'diagnosis', 'treatment_date']
+    list_display = ['med_record', 'symptoms', 'diagnosis', 'diagnosis_period']
 
 
 class CustomMedication(admin.ModelAdmin):
     model = Medication
-    list_display = ['med_record', 'name', 'instruction', 'attention']
+    list_display = ['record_detail', 'name', 'instruction', 'attention']
 
 
 class CustomSickness(admin.ModelAdmin):
     model = Sickness
-    list_display = ['med_record', 'name', 'description', 'status']
+    list_display = ['record_detail', 'name', 'description', 'status']
 
 
 class CustomRealTimeChat(admin.ModelAdmin):
@@ -78,12 +79,12 @@ class CustomRealTimeChat(admin.ModelAdmin):
 
 class CustomPayment(admin.ModelAdmin):
     model = Payment
-    list_display = ['med_record', 'method', 'hospital_fee', 'status']
+    list_display = ['record_detail', 'method', 'hospital_fee', 'status']
 
 
 class CustomEvaluation(admin.ModelAdmin):
     model = Evaluation
-    list_display = ['med_record', 'rating', 'feedback']
+    list_display = ['record_detail', 'rating', 'feedback']
 
 
 class CustomStatus(admin.ModelAdmin):

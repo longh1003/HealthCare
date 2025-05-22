@@ -2,10 +2,22 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
+class CustomDateTimeField(models.DateTimeField):
+    def value_to_string(self, obj):
+        val = self.value_from_object(obj)
+        print(1)
+        if val:
+            print(2)
+            val.replace(microsecond=0)
+            return val.isoformat()
+        return ''
+
+
 class OnlyActive(models.Model):
     active = models.BooleanField(default=True)
     class Meta:
         abstract = True
+        ordering = ['-id']
 
 class BaseModel(models.Model):
     active = models.BooleanField(default=True)
@@ -14,6 +26,7 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['-id']
 
 
 class Role(BaseModel):
@@ -24,7 +37,7 @@ class Role(BaseModel):
 
 
 class User1(AbstractUser):
-    date_of_birth = models.DateField(auto_now_add=True)
+    date_of_birth = models.DateTimeField(auto_now_add=True)
     contact_number = models.CharField(max_length=15)
     address = models.TextField(default="Not specify")
 
@@ -34,6 +47,7 @@ class User1(AbstractUser):
 
 class User(User1):
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
+    # pass
 
 
 class MedicalRecord(BaseModel):
@@ -42,18 +56,6 @@ class MedicalRecord(BaseModel):
 
     def __str__(self):
         return f"{self.user} {self.treatment_history}"
-
-
-class MedicalRecordDetail(BaseModel):
-    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE, related_name="med_record")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="mrd_doctor", default=3)
-    symptoms = models.TextField(null=True) #nullable
-    diagnosis = models.TextField(null=True) #nullable
-    treatment_date = models.DateTimeField() #dang ki lich kham
-
-    #if user.role != 'Doctor' error
-    def __str__(self):
-        return str(self.med_record)
 
 
 class Status(BaseModel):
@@ -68,7 +70,7 @@ class Status(BaseModel):
 
 
 class DiagnosisPeriod(OnlyActive):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="dp_doctor", default=3, limit_choices_to={'role': 'DOCTOR'})
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="doctor", default=1, limit_choices_to={'role': 3})
     fromDateTime = models.DateTimeField()
     toDateTime = models.DateTimeField()
     max_requests = models.IntegerField(default=5)
@@ -76,52 +78,63 @@ class DiagnosisPeriod(OnlyActive):
     status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE, limit_choices_to={'for_doctor': 1})
 
     def __str__(self):
-        # id = DiagnosisPeriod.doctor
-        # user = User.objects.get(id=id)
         return self.user.username
 
 
+class MedicalRecordDetail(BaseModel):
+    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE, related_name="med_record", default=1)
+    diagnosis_period = models.ForeignKey(DiagnosisPeriod, on_delete=models.CASCADE, related_name='treatment_date', default=1)
+    symptoms = models.TextField(null=True)
+    diagnosis = models.TextField(null=True)
+
+    #if user.role != 'Doctor' error
+    def __str__(self):
+        return str(self.med_record)
+
+    class Meta:
+        unique_together = ['med_record', 'diagnosis_period']
+
+
 class Sickness(BaseModel):
-    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE) #foreign key to medicalrecord_id
+    record_detail = models.ForeignKey(MedicalRecordDetail, on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=255)
     description = models.TextField(null=True)
-    status = models.ForeignKey(Status, on_delete=models.CASCADE, limit_choices_to={'for_sickness': 1}) #foreign key to status.id
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, limit_choices_to={'for_sickness': 1})
 
     def __str__(self):
         return self.name
 
 
 class Medication(BaseModel):
-    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE) #foreign key to medicalrecord.id
-    name = models.CharField(max_length=255)
+    record_detail = models.ForeignKey(MedicalRecordDetail, on_delete=models.CASCADE, default=1)
+    name = models.CharField(max_length=255, unique=True)
     instruction = models.TextField(null=True)
     attention = models.TextField(null=True)
 
     def __str__(self):
         return self.name
 
-    class Meta:
-        unique_together = ['med_record', 'name']
-
 class RealTimeChat(BaseModel):
     users = models.ManyToManyField('User')
     chat_box = models.TextField(null=True)
-    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=3,limit_choices_to={'for_chat': 1}) #foreign key
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=3,limit_choices_to={'for_chat': 1})
 
 
 class Payment(BaseModel):
-    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE) #foreign key to MedicalRecord.id
+    record_detail = models.ForeignKey(MedicalRecordDetail, on_delete=models.CASCADE, default=1)
     method = models.TextField(null=True)
     hospital_fee = models.FloatField(default=0)
-    status = models.ForeignKey(Status, default=None, on_delete=models.CASCADE, limit_choices_to={'for_payment': 1}) #foreign key
+    status = models.ForeignKey(Status, default=None, on_delete=models.CASCADE, limit_choices_to={'for_payment': 1})
 
     def __str__(self):
         return str(self.med_record)
 
 class Evaluation(BaseModel):
-    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE)  #foreign key to MedicalRecord.id
+    record_detail = models.ForeignKey(MedicalRecordDetail, on_delete=models.CASCADE, default=1)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
     feedback = models.TextField(null=True)
 
     def __str__(self):
         return str(self.med_record)
+
+
