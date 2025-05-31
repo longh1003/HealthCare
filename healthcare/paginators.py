@@ -1,4 +1,10 @@
 from rest_framework import pagination
 
-class MedicationPaginator(pagination.PageNumberPagination):
-    page_size = 2
+class MedicalRecordPaginator(pagination.PageNumberPagination):
+    page_size = 5
+
+class MedicalRecordDetailPaginator(pagination.PageNumberPagination):
+    page_size = 5
+
+class DiagnosisPeriodPaginator(pagination.PageNumberPagination):
+    page_size = 5

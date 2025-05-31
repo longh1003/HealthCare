@@ -96,7 +96,7 @@ class ChatSerializer(ChatNoUsersSerializer):
 class MedicationSerializer(MedicationMinimalSerializer):
     class Meta:
         model = MedicationMinimalSerializer.Meta.model
-        fields = MedicationMinimalSerializer.Meta.fields + ['med_record', 'instruction', 'attention']
+        fields = MedicationMinimalSerializer.Meta.fields + ['record_detail', 'instruction', 'attention']
 
 
 class SicknessSerializer(serializers.ModelSerializer):

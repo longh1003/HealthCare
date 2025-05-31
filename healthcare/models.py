@@ -15,9 +15,11 @@ class CustomDateTimeField(models.DateTimeField):
 
 class OnlyActive(models.Model):
     active = models.BooleanField(default=True)
+
     class Meta:
         abstract = True
         ordering = ['-id']
+
 
 class BaseModel(models.Model):
     active = models.BooleanField(default=True)
@@ -46,7 +48,7 @@ class User1(AbstractUser):
 
 
 class User(User1):
-    role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, default=None, null=True, blank=True)
     # pass
 
 
@@ -70,24 +72,28 @@ class Status(BaseModel):
 
 
 class DiagnosisPeriod(OnlyActive):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="doctor", default=1, limit_choices_to={'role': 3})
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="doctor", default=None, blank=True, null=True,
+                             limit_choices_to={'role': 3})
     fromDateTime = models.DateTimeField()
     toDateTime = models.DateTimeField()
     max_requests = models.IntegerField(default=5)
     current_requests = models.IntegerField(default=0)
-    status = models.ForeignKey(Status, default=1, on_delete=models.CASCADE, limit_choices_to={'for_doctor': 1})
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, limit_choices_to={'for_doctor': 1}, default=None,
+                               blank=True, null=True)
 
     def __str__(self):
         return self.user.username
 
 
 class MedicalRecordDetail(BaseModel):
-    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE, related_name="med_record", default=1)
-    diagnosis_period = models.ForeignKey(DiagnosisPeriod, on_delete=models.CASCADE, related_name='treatment_date', default=1)
+    med_record = models.ForeignKey(MedicalRecord, on_delete=models.CASCADE, related_name="med_record", null=True,
+                                   blank=True, default=None)
+    diagnosis_period = models.ForeignKey(DiagnosisPeriod, on_delete=models.CASCADE, related_name='treatment_date',
+                                         null=True, blank=True, default=None)
     symptoms = models.TextField(null=True)
     diagnosis = models.TextField(null=True)
 
-    #if user.role != 'Doctor' error
+    # if user.role != 'Doctor' error
     def __str__(self):
         return str(self.med_record)
 
@@ -114,10 +120,11 @@ class Medication(BaseModel):
     def __str__(self):
         return self.name
 
+
 class RealTimeChat(BaseModel):
     users = models.ManyToManyField('User')
     chat_box = models.TextField(null=True)
-    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=3,limit_choices_to={'for_chat': 1})
+    status = models.ForeignKey(Status, on_delete=models.CASCADE, default=3, limit_choices_to={'for_chat': 1})
 
 
 class Payment(BaseModel):
@@ -129,6 +136,7 @@ class Payment(BaseModel):
     def __str__(self):
         return str(self.med_record)
 
+
 class Evaluation(BaseModel):
     record_detail = models.ForeignKey(MedicalRecordDetail, on_delete=models.CASCADE, default=1)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0)
@@ -136,5 +144,3 @@ class Evaluation(BaseModel):
 
     def __str__(self):
         return str(self.med_record)
-
-

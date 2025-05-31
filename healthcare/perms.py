@@ -36,10 +36,34 @@ class ChatOwnerPerm(permissions.IsAuthenticated):
 
         return request.user.is_authenticated and doctor and status_close
 
-class MedicationPerm(permissions.IsAuthenticated):
+
+class DoctorRecordPerm(permissions.IsAuthenticated):
     def has_permission(self, request, view):
         return request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj):
-        med_record = models.MedicalRecord.objects.get(id__exact=obj[0].med_record_id)
-        return request.user.is_authenticated and request.user.id == med_record.user_id
+        return request.user.is_authenticated and obj[0].user.id == request.user.id
+
+
+class OwnerDetailPerm(permissions.IsAuthenticated):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_authenticated and request.user.id == obj.user.id
+
+
+class AdminPerm(permissions.IsAuthenticated):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_authenticated and request.user.role.id == obj.id
+
+# class MedicationPerm(permissions.IsAuthenticated):
+#     def has_permission(self, request, view):
+#         return request.user.is_authenticated
+#
+#     def has_object_permission(self, request, view, obj):
+#         med_record = models.MedicalRecord.objects.get(id__exact=obj[0].record_detail_id)
+#         return request.user.is_authenticated and request.user.id == med_record.user_id

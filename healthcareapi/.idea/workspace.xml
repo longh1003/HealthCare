@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d06e1ba6-4813-4cf4-b24f-c6ec6d626924" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../healthcare/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../healthcare/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../healthcare/paginators.py" beforeDir="false" afterPath="$PROJECT_DIR$/../healthcare/paginators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../healthcare/perms.py" beforeDir="false" afterPath="$PROJECT_DIR$/../healthcare/perms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../healthcare/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/../healthcare/serializers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../healthcare/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../healthcare/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../healthcare/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../healthcare/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 4
+}]]></component>
+  <component name="ProjectId" id="2xiZxJsk6qmva6426SrblMvwmt7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main-real",
+    "last_opened_file_path": "C:/Users/Admin/Downloads/healthcarev1"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-d7ad00fb9fc3-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23726.102" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d06e1ba6-4813-4cf4-b24f-c6ec6d626924" name="Changes" comment="" />
+      <created>1748423103294</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748423103294</updated>
+    </task>
+    <servers />
+  </component>
+</project>

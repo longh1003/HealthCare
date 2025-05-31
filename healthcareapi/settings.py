@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -25,8 +24,7 @@ SECRET_KEY = 'django-insecure-t7b*j5hb1m@4lv6&gu0v21!lhdmp0ero)skdz39@uo4614ea=z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -40,15 +38,15 @@ INSTALLED_APPS = [
     'healthcare.apps.HealthcareConfig',
     'rest_framework',
     'drf_yasg',
-    'oauth2_provider'
+    'oauth2_provider',
+    'corsheaders'
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ( 'oauth2_provider.contrib.rest_framework.OAuth2Authentication',)
+    'DEFAULT_AUTHENTICATION_CLASSES': ('oauth2_provider.contrib.rest_framework.OAuth2Authentication',)
 }
 
-OAUTH2_PROVIDER = { 'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore' }
-
+OAUTH2_PROVIDER = {'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,6 +56,25 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://192.168.100.207:8081',  # or your frontend URL
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+    'OPTIONS',
+]
+
+CORS_ALLOW_HEADERS = [
+    'Content-Type',
+    'Authorization',
 ]
 
 ROOT_URLCONF = 'healthcareapi.urls'
@@ -79,7 +96,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'healthcareapi.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -89,16 +105,15 @@ DATABASES = {
         'NAME': 'healthcaredb',
         'USER': 'root',
         'PASSWORD': '123456',
-        'HOST': '' # mặc định localhost
+        'HOST': ''  # mặc định localhost
     }
 }
 
 import pymysql
+
 pymysql.install_as_MySQLdb()
 
-
-AUTH_USER_MODEL='healthcare.User'
-
+AUTH_USER_MODEL = 'healthcare.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -118,7 +133,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
@@ -130,7 +144,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
@@ -141,5 +154,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CLIENT_ID = 'fGTAAiOd8O8tYFh415ei5aDWk4W1ESgNvGqMHdz8'
-CLIENT_SECRET = '0pj1saWikxq2RxW6x1EU2HBk64RQltvCs17ILP7y1uv3o077EpUZ1I1Y9yQedfqHjSDLnMqWiwr78B1ReJrUadlr2C2IXRdSBpNaJdYB98I5rkluzKo1AiXebswpN5Gm'
+CLIENT_ID = 'kZzepeqTa5qcbEZu3DInUyDQzdC5Ai94ynxV6Zhu'
+CLIENT_SECRET = 'k6qpIDaCGKuh8ig3MreLulj80JfemvFFLZVsYYTM7MxF1SyGaVA8WhagQ3XGo6cBfZy6UDVsHPorZGlGHj1pleL7L6tY0zfNCZfv1eIbNd5ONNohGqV2LJzfa4dzBAbo'
